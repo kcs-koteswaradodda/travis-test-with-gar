@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - 10
+
+services:
+  - docker 
+
+script: 
+  - docker build -t react-example:latest .
+  - docker images 
+
+deploy: 
+  provider: script 
+  script: bash docker_push_to_gar 
+  on:
+    branch: main
