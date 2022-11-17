@@ -13,8 +13,9 @@ deploy:
   provider: script 
   script:
     - echo "$ARTIFACT_REGISTRY_KEY" | docker login -u _json_key_base64 --password-stdin https://us-west1-docker.pkg.dev
-    - export GCR=gcr.io/kcs-ace2/hello-node/travis-image
-    - docker tag react-example gcr.io/kcs-ace2/hello-node/travis-image:latest
-    - docker gcr.io/kcs-ace2/hello-node/travis-image
+    - export TRAVIS_TEST_WITH_GAR_REPO=us-west1-docker.pkg.dev/kcs-ace2/travis-test-with-gar/travis-image
+    - docker build -f Dockerfile -t $TRAVIS_TEST_WITH_GAR_REPO:build-$TRAVIS_BUILD_NUMBER -t $TRAVIS_TEST_WITH_GAR_REPO:latest .
+    - docker push $TRAVIS_TEST_WITH_GAR_REPO:build-$TRAVIS_BUILD_NUMBER
+    - docker push $TRAVIS_TEST_WITH_GAR_REPO:latest
   on:
     branch: main
